@@ -19,7 +19,7 @@ yarn dev
 ### 2. SFComponente
 
 - `<script setup lang="ts">`
-   `import HelloWorld from './components/HelloWorld.vue'`
+  `import HelloWorld from './components/HelloWorld.vue'`
 - `<template>`
 - `<style>`
 - Props => defineProps<{post: Post;}>()
@@ -28,7 +28,7 @@ yarn dev
 
 - delete import and file styles.css default
 - add `<style>` at index.html or
-- add @import at App.vue > style  
+- add @import at App.vue > style
 
 ### 4. Template actions
 
@@ -57,7 +57,7 @@ Variable que se actualizara en el DOM cuando cambie de valor
 
 2. computed: usar cuando no sea necesario crea una nueva variable solo derivar de un valor existente
 
-- const posts = computed(() =>  [today, thisWeek, thisMonth])
+- const posts = computed(() => [today, thisWeek, thisMonth])
 
 ### 6. Typescript
 
@@ -70,23 +70,23 @@ Variable que se actualizara en el DOM cuando cambie de valor
 // const periods: Period[] = ["Today", "This Week", "This Month"]
 // const periods: string[] = ["Today", "Week", "Month"]
 
-const periods = ["Today", "This Week", "This Month"] as const
-type Period = typeof periods[number]
+const periods = ['Today', 'This Week', 'This Month'] as const;
+type Period = typeof periods[number];
 
-const optionSelect = ref<Period>( "Today")
+const optionSelect = ref<Period>('Today');
 
 function selectPeriod(period: Period) {
-    optionSelect.value = period
+  optionSelect.value = period;
 }
 
 export interface Post {
-    id: string
-    title: string
-    created: string
+  id: string;
+  title: string;
+  created: string;
 }
 
 export interface TimelinePost extends Omit<Post, 'created'> {
-    created: DateTime
+  created: DateTime;
 }
 ```
 
@@ -154,7 +154,7 @@ const postsStore = usePosts()
 
 ```js
 // pinia store
- actions: { 
+ actions: {
     async fetchPosts() {
         const res = await window.fetch("http://localhost:8000/posts")
         const data = (await res.json()) as Post[]
@@ -171,11 +171,12 @@ const postsStore = usePosts()
     <template #default>
         <Timeline />
     </template>
-    <template #fallback> 
+    <template #fallback>
         Loading...
     </template>
 </Suspense>
 ```
+
 ### 10. router
 
 1. yarn add vue-router
@@ -185,9 +186,25 @@ const postsStore = usePosts()
 
 ```ts
 export const router = createRouter({
-    history: createWebHistory(),
-    routes: [
-       {path: "/", component: Home} 
-    ]
-})
+  history: createWebHistory(),
+  routes: [{ path: '/', component: Home }],
+});
 ```
+
+### 11. Formularios
+
+1. variable reactiva
+2. v-model on template = :value + @input
+   - asigna valor al input y guarda valor en variable ref
+
+```html
+<input
+  v-model="title"
+  :value="title"
+  @input="e => title.value = e.target.value"
+/>
+```
+### 12. Life cycles
+
+- created (code exec once on setup script when component is created) is different to mounted (when dom loaded already)
+- functions autoejecutadas with callback
