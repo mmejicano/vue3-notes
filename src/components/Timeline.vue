@@ -16,7 +16,7 @@ const postsStore = usePosts()
 // function selectPeriod(period: Period) {
 //   selectedPeriod.value = period;
 // }
-
+await postsStore.fetchPosts()
 
 </script>
 <template>

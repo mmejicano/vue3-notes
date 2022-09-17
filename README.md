@@ -98,9 +98,11 @@ export interface TimelinePost extends Omit<Post, 'created'> {
 yarn add luxon
 yarn add -D @types/luxon
 yarn add pinia
+yarn add vue-router
+yarn add axios
 ```
 
-### Global state
+### 8. Global state
 
 - custom = interface + class (reactive+readonly) + function
 - pinia: yarn add pinia
@@ -147,3 +149,30 @@ const postsStore = usePosts()
 ```
 
 - vuex
+
+### 9. Fetching data and Suspense
+
+```js
+// pinia store
+ actions: { 
+    async fetchPosts() {
+        const res = await window.fetch("http://localhost:8000/posts")
+        const data = (await res.json()) as Post[]
+    }
+ }
+ // component
+ await postsStore.fetchPosts()
+ // to use await on setup need to:
+ // 1. wrap component on a Suspense component
+ // 2. provide 2 component (template) using slot: #defaul and #fallback
+
+ // App.vue
+<Suspense>
+    <template #default>
+        <Timeline />
+    </template>
+    <template #fallback> 
+        Loading...
+    </template>
+</Suspense>
+```
