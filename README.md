@@ -36,9 +36,10 @@ a. {{ variable }}
 b. directivas
 
 - v-for, importante :key
-- v-if
+- v-if / v-show = hidden
 - v-bind => :xxx
 - v-on => @click for events (default envia valor e)
+- v-model
 
 ```html
 <!-- Examples -->
@@ -51,8 +52,8 @@ Variable que se actualizara en el DOM cuando cambie de valor
 
 1. variables
 
-- let var1 = ref() + var1.value = "hola"
-- let var2 = reactive() + var2 = "hola2"
+- let var1 = ref() + var1.value = "hola" => en template count++
+- let var2 = reactive() + var2 = "hola2" => solo para objects
 
 2. computed: usar cuando no sea necesario crea una nueva variable solo derivar de un valor existente
 
@@ -96,5 +97,53 @@ export interface TimelinePost extends Omit<Post, 'created'> {
 ```bash
 yarn add luxon
 yarn add -D @types/luxon
+yarn add pinia
 ```
 
+### Global state
+
+- custom = interface + class (reactive+readonly) + function
+- pinia: yarn add pinia
+
+```js
+// main.ts
+import { createPinia } from 'pinia'
+
+createApp(App)
+    .use(createPinia())
+    .mount('#app')
+
+// store/posts.ts
+import { defineStore } from "pinia"
+
+interface PostsState {
+    foo: string
+}
+
+export const usePosts = defineStore("posts", {
+    state: (): PostsState => ({ // reactive on pinia
+        foo: "foo"
+    }),
+
+    actions: { // methods on pinia
+        updateFoo(value: string) {
+            this.foo = value
+        }
+    },
+    getters: { // computed properties on pinia
+        filteredPosts: (state) => foo.upperCase()
+})
+
+// component
+import { usePosts } from '../stores/postpinia';
+const postsStore = usePosts()
+
+<template>
+ {{ postsStore.foo }}
+  <button @click="postsStore.updateFoo(estado)"
+    Update
+  </button>
+</template>
+```
+
+- vuex
