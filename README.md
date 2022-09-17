@@ -160,7 +160,7 @@ const postsStore = usePosts()
         const data = (await res.json()) as Post[]
     }
  }
- // component
+ // component Timeline.vue
  await postsStore.fetchPosts()
  // to use await on setup need to:
  // 1. wrap component on a Suspense component
@@ -175,4 +175,19 @@ const postsStore = usePosts()
         Loading...
     </template>
 </Suspense>
+```
+### 10. router
+
+1. yarn add vue-router
+2. create router.ts + views/
+3. edit main.ts => use(router)
+4. add `<RouterView>`
+
+```ts
+export const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+       {path: "/", component: Home} 
+    ]
+})
 ```

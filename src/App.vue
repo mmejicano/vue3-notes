@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import Timeline from "./components/Timeline.vue";
+import NavBar from './components/NavBar.vue'
 </script>
 
 <template>
   <div class="section">
     <div class="container">
-      <Suspense>
-        <template #default>
-          <Timeline />
-        </template>
-        <template #fallback> 
-          <progress class="progress is-link is-small" />
-        </template>
-      </Suspense>
+      <NavBar/>
+      <RouterView/>
     </div>
   </div>
 </template>
