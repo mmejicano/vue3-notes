@@ -1,4 +1,6 @@
-# NOTAS VUE 3
+# NOTAS: VUE 3 + Composition API
+
+---
 
 ## Composition API
 
@@ -47,7 +49,6 @@ b. directivas
 c. slot
 d. teleport: inyecta contentido en otro componente
 
-
 ```html
 <!-- Examples -->
 <a v-for="period of periods" :key="period"> {{period}}</a>
@@ -59,14 +60,24 @@ d. teleport: inyecta contentido en otro componente
 
 > Variable que se actualizara en el DOM cuando cambie de valor
 
-1. __variables reactivas__
+1. variables reactivas
 
 - let var1 = ref() + var1.value = "hola" => en template count++
 - let var2 = reactive() + var2 = "hola2" => solo para objects
 
-2. __computed properties__: usar cuando no sea necesario crear una nueva variable solo derivar de un valor existente, debe ser un calculo simple y no puede ser asincrono
+2. computed properties
+
+  - usar cuando no sea necesario crear una nueva variable solo derivar de un valor existente
+  - debe ser un calculo simple y no puede ser asincrono
 
 - const posts = computed(() => [today, thisWeek, thisMonth])
+```js
+const modalStyle = computed(() => { 
+  return {
+    display: modal.show.value ? 'block': 'none'
+  }
+ })
+```
 
 3. watch => similar to computed properties but async, requiere indicar dependencia reactiva
 
@@ -242,6 +253,12 @@ router.push('/')
   :value="title"
   @input="e => title.value = e.target.value"
 />
+
+<CustomInput
+  :modelValue="searchText"
+  @update:modelValue="newValue => searchText = newValue"
+/>
+
 ```
 
 ### 12. Lifecycles
@@ -278,7 +295,51 @@ function foo() {
 }
 const t = debounce(foo, 1000)
 t()
+// ----
+watch(markdown, debounce(parseHtml, 250),{immediate: true})
+
 ```
 
 > lazy Loading
 > cache
+
+### 15. Composables
+
+> is a function that leverages Vue's Composition API to encapsulate and reuse stateful logic
+> puede retornar un objeto con el state y las funciones que modifican el state
+
+```js
+const show = ref(false)
+export function useModal() {
+    return {
+        show,
+        showModal: () => (show.value = true),
+        hideModal: () => (show.value = false),
+    }
+}
+```
+
+### 16. Custom events
+
+
+```js
+const emit = defineEmits<{
+    (event: 'update:modelValue', value:string): void
+}>()
+
+function handleInput(e: Event) {
+    const value = (e.target as HTMLInputElement).value
+    emit('update:modelValue', value)
+}
+```
+
+### 17. References
+
+[Vue docs](https://vuejs.org/guide/reusability/composables.html#composables)
+[Bulma css docs](https://bulma.io/documentation/)
+[MD cheat](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+[Couse vue udemy](https://www.udemy.com/course/vuejs-3-the-composition-api/)
+[This.Project repositorie](https://github.com/lmiller1990/vuejs-composition-api-v3)
+[Other projects vue](https://github.com/mmejicano/complete-vuejs)
+[Youtube channel author](https://www.youtube.com/c/LachlanMiller)
+[vue pattern](https://learn-vuejs.github.io/vue-patterns/es/patterns/)
