@@ -39,6 +39,18 @@ export const usePosts = defineStore("posts", {
             // update the state
             this.ids = ids // access to properties like atributes
             this.all = all
+        },
+        createPost(post: TimelinePost) {
+
+            const body = JSON.stringify({...post, created: post.created.toISO() })
+            return window.fetch("http://localhost:8000/posts", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body
+            })
+
         }
     },
     getters: { // computed properties on pinia

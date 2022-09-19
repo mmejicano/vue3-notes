@@ -1,8 +1,3 @@
-<template>
-    <p>New post</p>
-    <PostWriter :post="post"/>
-</template>
-
 <script setup lang="ts">
 import { DateTime } from 'luxon';
 import PostWriter from '../components/PostWriter.vue';
@@ -16,3 +11,7 @@ const post: TimelinePost = {
 }
 </script>
 
+<template>
+    <p class="is-uppercase has-text-centered">Crear nuevo post</p>
+    <PostWriter :post="post"/>
+</template>

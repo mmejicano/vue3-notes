@@ -44,6 +44,10 @@ b. directivas
 - v-model
 - v-html
 
+c. slot
+d. teleport: inyecta contentido en otro componente
+
+
 ```html
 <!-- Examples -->
 <a v-for="period of periods" :key="period"> {{period}}</a>
@@ -213,12 +217,17 @@ const postsStore = usePosts()
 2. create router.ts + views/
 3. edit main.ts => use(router)
 4. add `<RouterView>`
+5. add `<RouterLink to="/posts/new" class="navbar-item">New Post</RouterLink>`
 
 ```ts
 export const router = createRouter({
   history: createWebHistory(),
   routes: [{ path: '/', component: Home }],
 });
+
+// - manual route
+const router = useRouter()
+router.push('/')
 ```
 
 ### 11. Formularios
@@ -261,7 +270,7 @@ console.log(content.value)
 
 ### 14. Optimization
 
-1. debounce: delay on typing before exec function => lodash
+> debounce: delay on typing before exec function => lodash
 
 ```js
 function foo() {
@@ -271,5 +280,5 @@ const t = debounce(foo, 1000)
 t()
 ```
 
-2. lazy Loading
-3. cache
+> lazy Loading
+> cache
