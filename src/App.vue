@@ -2,7 +2,6 @@
 import { computed, ref } from "vue";
 import NavBar from "./components/NavBar.vue";
 import { useModal } from "./composables/modal";
-import FormInput from "./components/FormInput.vue";
 
 const username = ref('')
 
@@ -21,7 +20,6 @@ const modalStyle = computed(() => {
     <div class="modal-background">
       <div class="modal-content">
         <div id="modal">
-          <FormInput name="Username" v-model="username"/>
         </div>
       </div>
     </div>
@@ -31,8 +29,6 @@ const modalStyle = computed(() => {
   <div class="section">
     <div class="container">
       <NavBar />
-                {{username}}
-
       <RouterView />
     </div>
   </div>

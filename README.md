@@ -4,7 +4,7 @@
 
 ## Composition API
 
-> requiere atributo o function setup()
+> requiere atributo o function setup(){return}
 > export the component by default
 > variables and methods available on template
 > cycle life is a method
@@ -22,7 +22,7 @@ yarn dev
 
 - `<script setup lang="ts">`
   `import HelloWorld from './components/HelloWorld.vue'`
-- `<template>`
+- `<template>` similar a Fragment <>
 - `<style>`
 - Props => defineProps<{post: Post;}>()
 
@@ -42,7 +42,7 @@ b. directivas
 - v-bind => :xxx
 - v-on => @click for events (default envia valor e)
   - @click, @input, @submit
-  - modifiers: .prevent
+  - modifiers: .prevent, .trim
 - v-model
 - v-html
 
@@ -54,6 +54,8 @@ d. teleport: inyecta contentido en otro componente
 <a v-for="period of periods" :key="period"> {{period}}</a>
 <div contenteditable ref="content" @input="handleInput"/>
 
+<Teleport to="#modal">Content</Teleport>
+<div id="modal"></div>
 ```
 
 ### 5. Reactividad
@@ -239,13 +241,26 @@ export const router = createRouter({
 // - manual route
 const router = useRouter()
 router.push('/')
+
+
+// "cache": mantiene el estado anterior
+<router-view v-slot="{Component}">
+  <keep-alive>
+    <component :is="Component"/>
+  </keep-alive>
+</router-view>
 ```
+
 
 ### 11. Formularios
 
 1. = variable reactiva
 2. v-model on template => :value + @input
    - asigna valor al input y guarda valor en variable ref
+3. validation
+
+- custom:
+- packages: vee-validate
 
 ```html
 <input
@@ -259,6 +274,40 @@ router.push('/')
   @update:modelValue="newValue => searchText = newValue"
 />
 
+```
+
+### 11.1 Validation framework
+
+1. validate required field
+2. validate 
+
+```js
+export interface Status {
+    valid: boolean
+    message?: string
+}
+// declara un tipo function que retorna un Status
+type Rule = (value: string) => Status
+
+export const required: Rule = (value: string): Status => {
+    const result = Boolean(value)
+    return {
+        valid: result,
+        message: result ? undefined:'This field is required'
+    }
+}
+
+export function validate(value: string, rules: Rule[]): Status {
+    for (const rule of rules) {
+        const result = rule(value)
+        if (!result.valid) {
+            return result
+        }
+    }
+    return {
+        valid: true
+    }
+}
 ```
 
 ### 12. Lifecycles
@@ -321,7 +370,6 @@ export function useModal() {
 
 ### 16. Custom events
 
-
 ```js
 const emit = defineEmits<{
     (event: 'update:modelValue', value:string): void
@@ -333,7 +381,9 @@ function handleInput(e: Event) {
 }
 ```
 
-### 17. References
+### 17. Proxy
+
+### 18. References
 
 [Vue docs](https://vuejs.org/guide/reusability/composables.html#composables)
 [Bulma css docs](https://bulma.io/documentation/)
