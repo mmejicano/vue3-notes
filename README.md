@@ -37,17 +37,18 @@ yarn dev
 a. {{ variable }} => default scape characters
 b. directivas
 
-- v-for, importante :key
-- v-if / v-show = hidden
-- v-bind => :xxx
-- v-on => @click for events (default envia valor e)
+- v-for="", importante :key
+- v-if="" + v-else (node adjacent) / v-show = "hidden"
+- v-bind="" => :xxx
+- v-on="" => @click for events (default envia valor e)
   - @click, @input, @submit
   - modifiers: .prevent, .trim
-- v-model
-- v-html
+- v-model=""
+- v-html=""
 
 c. slot
 d. teleport: inyecta contentido en otro componente
+e. component :is="value": componentes dinamicos
 
 ```html
 <!-- Examples -->
@@ -56,6 +57,8 @@ d. teleport: inyecta contentido en otro componente
 
 <Teleport to="#modal">Content</Teleport>
 <div id="modal"></div>
+
+<component :is="modal.component.value"/>
 ```
 
 ### 5. Reactividad
@@ -238,6 +241,10 @@ export const router = createRouter({
   routes: [{ path: '/', component: Home }],
 });
 
+### 10.1 GUARDS
+
+- globally, per-route*, in-component
+
 // - manual route
 const router = useRouter()
 router.push('/')
@@ -383,13 +390,48 @@ function handleInput(e: Event) {
 
 ### 17. Proxy
 
+- replace on fetch function localhost:8000 by /api/
+- redirect old url to new url_api
+- edit vite.config.ts
+
+> Error: App tried to go URL: http://127.0.0.1:5173/api/posts
+> After: http://localhost:8000/api/xxxxx
+
+```js
+'^/api/.*': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+```
+
+### SECURITY
+
+### BACKEND
+
+- Express
+- model
+- Controller: index+ store+ update+ show+ destroy
+- Routes
+- Middleware
+- Validations
+- HTTP methods: get, post, put, delete
+- Status Code: 200, 201, 404, 500, 403
+- Authentication: cookie + token valid + cookies
+- Autorization: roles
+- Cors
+- Error Handler
+- Library: morgan, cookie-parser, cors, express-sesion, luxon, jsonwebtoken
+
+
 ### 18. References
 
-[Vue docs](https://vuejs.org/guide/reusability/composables.html#composables)
-[Bulma css docs](https://bulma.io/documentation/)
-[MD cheat](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-[Couse vue udemy](https://www.udemy.com/course/vuejs-3-the-composition-api/)
-[This.Project repositorie](https://github.com/lmiller1990/vuejs-composition-api-v3)
-[Other projects vue](https://github.com/mmejicano/complete-vuejs)
-[Youtube channel author](https://www.youtube.com/c/LachlanMiller)
-[vue pattern](https://learn-vuejs.github.io/vue-patterns/es/patterns/)
+- [Vue docs](https://vuejs.org/guide/reusability/composables.html#composables)
+- [Bulma css docs](https://bulma.io/documentation/)
+- [MD cheat](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+- [Couse vue udemy](https://www.udemy.com/course/vuejs-3-the-composition-api/)
+- [This.Project repositorie](https://github.com/lmiller1990/vuejs-composition-api-v3)
+- [Other projects vue](https://github.com/mmejicano/complete-vuejs)
+- [Youtube channel author](https://www.youtube.com/c/LachlanMiller)
+- [vue pattern](https://learn-vuejs.github.io/vue-patterns/es/patterns/)
+- [Vite proxy](https://vitejs.dev/config/server-options.html)

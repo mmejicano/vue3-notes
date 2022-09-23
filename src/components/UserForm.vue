@@ -6,20 +6,31 @@ import { NewUser } from '../users';
 import { useUsers } from '../stores/users';
 import { useModal } from "../composables/modal";
 
+defineProps<{
+  error?: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'submit', payload: NewUser): void
+}>()
+
 const username = ref("");
 const usernameStatus = computed(() => {
   return validate(username.value, [required, length({ min: 5, max: 10 })]);
 });
+
 const password = ref("");
 const passwordStatus = computed(() => {
   return validate(password.value, [required, length({ min: 10, max: 40 })]);
 });
+
 const isInvalid = computed(() => {
   return (!usernameStatus.value.valid || !passwordStatus.value.valid)
 });
 
 const userStore = useUsers();
 const modal = useModal()
+
 async function handleSubmit() {
 
     if(isInvalid.value) return
@@ -29,10 +40,9 @@ async function handleSubmit() {
     }
     // console.log(newUser)
     try {
-        
-        await userStore.createUser(newUser)
+        emit('submit', newUser);
+             
     } catch (e) {
-    modal.hideModal()       
     }
 }
 </script>
@@ -41,6 +51,10 @@ async function handleSubmit() {
   <form @submit.prevent="handleSubmit" class="box mt-6">
     <FormInput type="text" :status="usernameStatus" name="Username" v-model="username" />
     <FormInput type="password" :status="passwordStatus" name="Password" v-model="password" />
+
+    <div v-if="error" class="is-danger help">
+      {{error}}
+    </div>
     <button class="button">Login</button>
   </form>
   <!-- {{ username }} -->
